@@ -21,7 +21,7 @@ The source system is Odoo ERP running on PostgreSQL. Each pharmacy client operat
 
 
 
-![[odoo_schema.png]]
+![Odoo Schema](odoo_schema.png)
 
 ### 1.3 Join Strategy
 
