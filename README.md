@@ -12,21 +12,7 @@ This assessment covers the full design of a data pipeline that extracts stock
 movement outcomes from each tenant, transforms them into an analytics-ready
 structure, and loads them into ClickHouse for reporting.
 
-## Repo Structure
 
-umet-etl-assessment/
-│
-├── docs/
-│   └── design-document.md      # Main submission — all 7 parts
-│
-├── diagrams/
-│   ├── odoo_schema.png          # Part 1 — Odoo source tables and join relationships
-│   ├── architecture.png         # Part 2 — End-to-end pipeline architecture
-│   ├── control_tables.png       # Part 2 — Tenant registry and watermark tables
-│   ├── loop.png                 # Part 2 — Incremental extraction loop
-│   └── reliability.png          # Part 6 — Schema drift, monitoring, backfill
-│
-└── README.md
 
 ## Design Document — Contents
 
