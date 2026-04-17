@@ -124,7 +124,8 @@ CREATE TABLE etl_config.tenants (
 );
 ```
 
-![[diagram1 architecture.drawio 1.png]]
+![Architecture](architecture.png)
+
 ### 2.3 Watermark Table
 
 Each tenant maintains its own extraction timestamp. The watermark only updates on a successful run — failed runs automatically retry from the same point on the next execution.
@@ -146,7 +147,7 @@ CREATE TABLE etl_config.watermarks (
 ### 2.4 Extraction Approach
 
 
-![[diagram2 control tables .drawio.png]]
+![Control Tables](control_tables.png)
 
 |Approach|Decision|
 |---|---|
@@ -173,7 +174,7 @@ Two fields are injected at extraction time into every row — neither exists in 
 | `etl_batch_id` | UUID per run          | Enables surgical rollback of any bad batch  |
 |                |                       |                                             |
 
-![[loop.png]]
+![Loop](loop.png)
 ### 2.6 Schedule
 
 Hourly incremental extraction. Full load on initial onboarding only.
@@ -309,7 +310,7 @@ Three layers run after every batch load:
 
 > See  Part 6 diagram — Solution 1: Schema Drift Detection.
 > 
-> ![[rest.drawio.png]]
+![Reliability](reliability.png)
 
 Before every extraction run a schema fingerprint check runs against each tenant database. It compares the live schema to a stored snapshot in `etl_config.schema_snapshots`. Three outcomes:
 
