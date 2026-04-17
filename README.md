@@ -57,6 +57,4 @@ All diagrams were built in draw.io.
 - **Two-layer load** — staging first then fact — protects reporting layer from bad data
 - **Watermark per tenant** — each pharmacy tracks its own extraction timestamp independently
 
-## Submitted by
 
-Submitted as part of the Aumet data engineering assessment.
