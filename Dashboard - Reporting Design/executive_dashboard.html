@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Executive Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100%;background:transparent;color:#e8eaf0;font-family:Arial,sans-serif}
+body{padding:0}
+:root{--bg:#0f1117;--bg2:#1a1d27;--bg3:#22263a;--border:#2a2e3d;--aumet:#1a5c4f;--aumet-light:#1e6b5a;--aumet-accent:#22c9a0;--text:#e8eaf0;--text2:#9aa0b8;--text3:#5a6180;--red:#e05252;--amber:#e8a44a;--green:#22c9a0}
+.wrap{width:100%;max-width:none;border-radius:0;overflow:hidden;border:1px solid var(--border);font-size:13px;background:var(--bg)}
+.topbar{background:var(--aumet);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-size:17px;font-weight:500;color:#fff;letter-spacing:.5px}
+.logo span{font-size:11px;font-weight:400;color:rgba(255,255,255,.6);margin-left:8px}
+.badge-page{background:rgba(255,255,255,.15);color:#fff;font-size:10px;padding:2px 8px;border-radius:99px;font-weight:500}
+.topbar-right{font-size:11px;color:rgba(255,255,255,.7)}
+.body{display:grid;grid-template-columns:170px minmax(0,1fr);min-height:540px}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:14px 12px;display:flex;flex-direction:column;gap:14px}
+.sb-title{font-size:11px;font-weight:500;color:var(--aumet-accent);text-transform:uppercase;letter-spacing:.05em;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fl{font-size:11px;color:var(--text2);font-weight:500}
+.fs{font-size:12px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;width:100%;appearance:none}
+.fs:focus{outline:none;border-color:var(--aumet-accent)}
+.main{background:var(--bg);padding:14px;min-width:0}
+.dh{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.dt{display:none}
+.ds{display:none}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab{font-size:12px;padding:5px 14px;border-radius:6px;border:1px solid var(--border);cursor:pointer;color:var(--text2);background:transparent;transition:all .15s}
+.tab.active{background:var(--aumet);color:#fff;border-color:var(--aumet);font-weight:500}
+.page{display:none}.page.active{display:block}
+.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mt,.st{width:100%;border-collapse:collapse;min-width:720px}
+.mt thead tr{background:var(--bg2)}
+.mt th{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;padding:7px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.mt th.r{text-align:right}
+.mt td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text)}
+.mt tr:last-child td{border-bottom:none}
+.mt tr:hover td{background:var(--bg2)}
+.mt td.r{text-align:right}
+.mn{font-weight:500;font-size:13px;color:var(--text)}
+.ms{font-size:11px;color:var(--text3);margin-top:2px}
+.vm{font-size:14px;font-weight:500;color:var(--text)}
+.vp{font-size:11px;margin-top:2px}
+.up{color:var(--green)}.down{color:var(--red)}.flat{color:var(--text3)}
+.pill{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px}
+.p-order{background:rgba(34,201,160,.12);color:var(--green)}
+.p-product{background:rgba(99,102,241,.15);color:#a5b4fc}
+.p-qty{background:rgba(59,130,246,.15);color:#93c5fd}
+.p-expiry{background:rgba(224,82,82,.12);color:var(--red)}
+.p-tenant{background:rgba(232,164,74,.12);color:var(--amber)}
+.tbl-section{margin-bottom:18px}
+.tbl-title{font-size:12px;font-weight:500;color:var(--aumet-accent);margin-bottom:8px;padding:6px 10px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--aumet-accent)}
+.st th{font-size:11px;font-weight:500;color:var(--text2);padding:6px 10px;text-align:left;background:var(--bg2);border-bottom:1px solid var(--border)}
+.st th.r{text-align:right}
+.st td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text)}
+.st tr:last-child td{border-bottom:none}
+.st tr:hover td{background:var(--bg2)}
+.st td.r{text-align:right}
+.bar-bg{background:var(--bg3);border-radius:99px;height:5px;margin-top:4px}
+.bar-fill{height:5px;border-radius:99px;background:var(--aumet-accent)}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;font-weight:500}
+.b-ok{background:rgba(34,201,160,.12);color:var(--green)}
+.b-warn{background:rgba(232,164,74,.12);color:var(--amber)}
+.b-danger{background:rgba(224,82,82,.12);color:var(--red)}
+.sbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.sc{background:var(--bg2);border-radius:8px;padding:10px 12px;border:1px solid var(--border);min-width:0}
+.sc-l{font-size:10px;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.sc-v{font-size:18px;font-weight:500;color:var(--text)}
+.af{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.7}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media (max-width: 1100px){
+  .sbar{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width: 900px){
+  .body{grid-template-columns:1fr}
+  .sidebar{border-right:none;border-bottom:1px solid var(--border)}
+}
+@media (max-width: 640px){
+  .topbar,.main,.sidebar{padding:12px}
+  .tabs{width:100%}
+  .tab{flex:1 1 100%;text-align:center}
+  .sbar{grid-template-columns:1fr}
+  .mt,.st{min-width:640px}
+}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Aumet executive dashboard dark theme with green top bar and connected filters</h2>
+<div class="wrap">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div class="logo">Aumet <span>Analytics</span></div>
+      <span class="badge-page">Executive Dashboard</span>
+    </div>
+    <div class="topbar-right" id="last-upd">Last updated: Today 13:00</div>
+  </div>
+
+  <div class="body">
+    <div class="sidebar">
+      <div class="sb-title">Filters</div>
+      <div class="fg">
+        <div class="fl">Date range</div>
+        <select class="fs" id="f-date" onchange="applyFilters()">
+          <option value="30">Last 30 days</option>
+          <option value="7">Last 7 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="365">Full year</option>
+        </select>
+      </div>
+      <div class="fg">
+        <div class="fl">Tenant</div>
+        <select class="fs" id="f-tenant" onchange="applyFilters()">
+          <option value="all">All tenants</option>
+          <option value="aldawaa">Al Dawaa</option>
+          <option value="alnahdi">Al Nahdi</option>
+          <option value="lifeph">Life Pharmacy</option>
+          <option value="nahdi2">Nahdi Express</option>
+        </select>
+      </div>
+      <div class="fg">
+        <div class="fl">Product</div>
+        <select class="fs" id="f-product" onchange="applyFilters()">
+          <option value="all">All products</option>
+          <option value="panadol">Panadol 500mg</option>
+          <option value="amox">Amoxicillin</option>
+          <option value="vitc">Vitamin C</option>
+          <option value="cotton">Cotton Wool</option>
+        </select>
+      </div>
+      <div class="fg">
+        <div class="fl">Movement</div>
+        <select class="fs" id="f-dir" onchange="applyFilters()">
+          <option value="all">All directions</option>
+          <option value="inbound">Inbound</option>
+          <option value="outbound">Outbound</option>
+          <option value="internal">Internal</option>
+        </select>
+      </div>
+      <div style="margin-top:auto;padding-top:10px;border-top:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--aumet-accent);font-weight:500;text-transform:uppercase;letter-spacing:.04em">Active filters</div>
+        <div class="af" id="active-filters">All tenants · Last 30 days</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="dh">
+        <div></div>
+        <div class="tabs">
+          <div class="tab active" onclick="showPage(0)">Page 1 — Metrics</div>
+          <div class="tab" onclick="showPage(1)">Page 2 — Tables</div>
+        </div>
+      </div>
+
+      <div class="page active" id="page0">
+        <div class="table-wrap">
+          <table class="mt">
+            <thead>
+              <tr>
+                <th style="width:34%">Metric</th>
+                <th class="r" style="width:15%">YTD</th>
+                <th class="r" style="width:15%">MTD</th>
+                <th class="r" style="width:15%">Yesterday</th>
+                <th style="width:21%">Topic</th>
+              </tr>
+            </thead>
+            <tbody id="metrics-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page" id="page1">
+        <div class="sbar" id="sbar"></div>
+        <div class="tbl-section">
+          <div class="tbl-title">Top products by movement volume</div>
+          <div class="table-wrap">
+            <table class="st"><thead><tr>
+              <th>Product</th><th class="r">Orders</th><th class="r">Qty moved</th><th class="r">% of total</th><th style="width:28%">Volume</th>
+            </tr></thead><tbody id="product-body"></tbody></table>
+          </div>
+        </div>
+        <div class="tbl-section">
+          <div class="tbl-title">Tenant summary</div>
+          <div class="table-wrap">
+            <table class="st"><thead><tr>
+              <th>Tenant</th><th class="r">Orders</th><th class="r">Qty moved</th><th class="r">Last activity</th><th>Status</th>
+            </tr></thead><tbody id="tenant-body"></tbody></table>
+          </div>
+        </div>
+        <div class="tbl-section">
+          <div class="tbl-title">Expiry risk</div>
+          <div class="table-wrap">
+            <table class="st"><thead><tr>
+              <th>Tenant</th><th>Product</th><th>Lot</th><th class="r">Qty</th><th class="r">Expiry date</th><th>Status</th>
+            </tr></thead><tbody id="expiry-body"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TI={all:0,aldawaa:1,alnahdi:2,lifeph:3,nahdi2:4};
+const PI={all:null,panadol:0,amox:1,vitc:2,cotton:3};
+const M=[
+  {name:'Total orders',sub:'Completed transfers across all tenants',topic:'Order activity',tc:'p-order',
+   ytd:[24812,8420,6310,5240,4840],mtd:[2104,712,534,443,409],yday:[318,108,81,67,62],
+   yp:[12,14,10,8,15],mp:[8,9,7,5,11],dp:[0,1,-1,0,2]},
+  {name:'Total quantity moved',sub:'Units physically transferred',topic:'Product movement',tc:'p-product',
+   ytd:[1400000,480000,362000,298000,274000],mtd:[118000,40400,30500,25100,23100],yday:[17200,5900,4450,3660,3370],
+   yp:[19,22,17,14,21],mp:[14,16,12,10,16],dp:[-3,-2,-4,-1,-3]},
+  {name:'Movement volume',sub:'Total movement events recorded',topic:'Quantity trends',tc:'p-qty',
+   ytd:[38450,13200,9930,8180,7540],mtd:[3210,1100,828,682,628],yday:[487,167,126,104,95],
+   yp:[22,25,20,16,24],mp:[17,19,15,11,19],dp:[5,6,4,3,6]},
+  {name:'Expired lots',sub:'Lots past expiration date',topic:'Expiry tracking',tc:'p-expiry',
+   ytd:[142,48,37,30,28],mtd:[18,6,5,4,4],yday:[3,1,1,1,0],
+   yp:[31,35,28,22,34],mp:[20,23,18,13,22],dp:[0,1,0,0,0]},
+  {name:'Active tenants',sub:'Pharmacies with movement activity',topic:'Tenant visibility',tc:'p-tenant',
+   ytd:[47,1,1,1,1],mtd:[44,1,1,1,1],yday:[39,1,1,1,1],
+   yp:[6,0,0,0,0],mp:[4,0,0,0,0],dp:[0,0,0,0,0]},
+  {name:'% missing expiry',sub:'Movements without expiry date',topic:'Expiry tracking',tc:'p-expiry',
+   ytd:[8.4,7.2,8.8,9.1,8.6],mtd:[7.9,6.8,8.3,8.7,8.1],yday:[8.1,6.9,8.5,8.9,8.3],
+   yp:[1.2,0.8,1.4,1.6,1.1],mp:[-0.4,-0.3,-0.5,-0.6,-0.4],dp:[0,0,0.1,0,-0.1]}
+];
+const P=[
+  {name:'Panadol 500mg',orders:[4820,1652,1243,1024,944],qty:[285000,97700,73600,60500,55800]},
+  {name:'Amoxicillin 250mg',orders:[3210,1100,827,681,628],qty:[198000,67900,51100,42100,38800]},
+  {name:'Vitamin C 1000mg',orders:[2840,973,731,602,555],qty:[162000,55600,41800,34400,31700]},
+  {name:'Cotton Wool 100g',orders:[1920,658,494,407,375],qty:[98000,33600,25300,20800,19200]},
+  {name:'Paracetamol 1000mg',orders:[1640,562,422,347,320],qty:[84000,28800,21700,17900,16500]},
+];
+const T=[
+  {name:'Al Dawaa',id:'aldawaa',last:'Today 12:45'},
+  {name:'Al Nahdi',id:'alnahdi',last:'Today 11:20'},
+  {name:'Life Pharmacy',id:'lifeph',last:'Today 09:15'},
+  {name:'Nahdi Express',id:'nahdi2',last:'Yesterday 18:30'},
+];
+const E=[
+  {tenant:'Al Dawaa',product:'Amoxicillin 250mg',lot:'LOT-2024-018',qty:240,date:'2024-04-02',s:'danger'},
+  {tenant:'Al Nahdi',product:'Panadol 500mg',lot:'LOT-2024-031',qty:180,date:'2024-04-10',s:'warn'},
+  {tenant:'Life Pharmacy',product:'Vitamin C 1000mg',lot:'LOT-2024-022',qty:96,date:'2024-04-15',s:'warn'},
+  {tenant:'Al Dawaa',product:'Paracetamol 1000mg',lot:'LOT-2024-041',qty:320,date:'2024-05-01',s:'ok'},
+  {tenant:'Nahdi Express',product:'Cotton Wool 100g',lot:'LOT-2024-009',qty:48,date:'2024-04-05',s:'danger'},
+];
+function fmt(v){
+  if(typeof v==='number'&&v%1!==0) return v.toFixed(1)+'%';
+  if(v>=1000000) return (v/1000000).toFixed(1)+'M';
+  if(v>=1000) return (v/1000).toFixed(0)+'K';
+  return String(v);
+}
+function pSign(v,pp){
+  const s=pp?'pp':'%';
+  if(v>0) return `<div class="vp up">+${Math.abs(v).toFixed(v%1===0?0:1)}${s} vs LY</div>`;
+  if(v<0) return `<div class="vp down">-${Math.abs(v).toFixed(v%1===0?0:1)}${s} vs LY</div>`;
+  return `<div class="vp flat">0${s} vs LY</div>`;
+}
+function applyFilters(){
+  const tenant=document.getElementById('f-tenant').value;
+  const date=document.getElementById('f-date').value;
+  const product=document.getElementById('f-product').value;
+  const ti=TI[tenant]||0;
+  const pi=PI[product];
+  const mult={30:1,7:0.23,90:3,365:12}[date];
+  const pm=pi!==null?0.22:1;
+  const tL=tenant==='all'?'All tenants':document.getElementById('f-tenant').selectedOptions[0].text;
+  const dL={30:'Last 30 days',7:'Last 7 days',90:'Last 90 days',365:'Full year'}[date];
+  document.getElementById('active-filters').textContent=`${tL} · ${dL}`;
+
+  document.getElementById('metrics-body').innerHTML=M.map(m=>{
+    const isP=m.name.includes('%');
+    const yi=ti||0;
+    const ytdv=isP?m.ytd[yi]:Math.round(m.ytd[yi]*mult*pm);
+    const mtdv=isP?m.mtd[yi]:Math.round(m.mtd[yi]*mult*pm);
+    const yv=isP?m.yday[yi]:Math.round(m.yday[yi]*mult*pm);
+    const rc=m.name==='Expired lots'?'color:var(--red)':m.name.includes('%')?'color:var(--amber)':'';
+    return `<tr><td><div class="mn">${m.name}</div><div class="ms">${m.sub}</div></td>
+      <td class="r"><div class="vm" style="${rc}">${fmt(ytdv)}</div>${pSign(m.yp[yi],isP)}</td>
+      <td class="r"><div class="vm" style="${rc}">${fmt(mtdv)}</div>${pSign(m.mp[yi],isP)}</td>
+      <td class="r"><div class="vm" style="${rc}">${fmt(yv)}</div>${pSign(m.dp[yi],isP)}</td>
+      <td><span class="pill ${m.tc}">${m.topic}</span></td></tr>`;
+  }).join('');
+
+  const yi=ti||0;
+  document.getElementById('sbar').innerHTML=`
+    <div class="sc"><div class="sc-l">Total orders</div><div class="sc-v">${fmt(Math.round(M[0].ytd[yi]*mult*pm))}</div><div class="vp up" style="font-size:11px">+12% vs LY</div></div>
+    <div class="sc"><div class="sc-l">Qty moved</div><div class="sc-v">${fmt(Math.round(M[1].ytd[yi]*mult*pm))}</div><div class="vp up" style="font-size:11px">+19% vs LY</div></div>
+    <div class="sc"><div class="sc-l">Active tenants</div><div class="sc-v">${ti?1:47}</div><div class="vp up" style="font-size:11px">+6% vs LY</div></div>
+    <div class="sc"><div class="sc-l">Expired lots</div><div class="sc-v" style="color:var(--red)">${Math.round(M[3].ytd[yi]*mult)}</div><div class="vp down" style="font-size:11px">+31% vs LY</div></div>`;
+
+  const prods=pi!==null?[P[pi]]:P;
+  const tq=prods.reduce((s,p)=>s+(p.qty[yi]||0),0)*mult;
+  document.getElementById('product-body').innerHTML=prods.map(p=>{
+    const q=Math.round(p.qty[yi]*mult);const o=Math.round(p.orders[yi]*mult);
+    const pc=tq>0?Math.round(q/tq*100):0;
+    return `<tr><td style="font-weight:500">${p.name}</td><td class="r">${fmt(o)}</td><td class="r">${fmt(q)}</td><td class="r">${pc}%</td><td><div class="bar-bg"><div class="bar-fill" style="width:${pc}%"></div></div></td></tr>`;
+  }).join('');
+
+  const tens=ti?T.filter(t=>t.id===tenant):T;
+  document.getElementById('tenant-body').innerHTML=tens.map(t=>{
+    const idx=TI[t.id];
+    return `<tr><td style="font-weight:500">${t.name}</td><td class="r">${fmt(Math.round(M[0].ytd[idx]*mult*pm))}</td><td class="r">${fmt(Math.round(M[1].ytd[idx]*mult*pm))}</td><td class="r" style="color:var(--text3)">${t.last}</td><td><span class="badge b-ok">Active</span></td></tr>`;
+  }).join('');
+
+  const exps=ti?E.filter(e=>e.tenant===tens[0]?.name):E;
+  document.getElementById('expiry-body').innerHTML=exps.map(e=>`<tr>
+    <td>${e.tenant}</td><td>${e.product}</td>
+    <td style="font-family:monospace;font-size:11px">${e.lot}</td>
+    <td class="r">${e.qty}</td><td class="r" style="font-size:12px">${e.date}</td>
+    <td><span class="badge b-${e.s}">${e.s==='danger'?'Expired':e.s==='warn'?'Expiring soon':'Valid'}</span></td>
+  </tr>`).join('');
+}
+function showPage(n){
+  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===n));
+}
+applyFilters();
+</script>
+</body>
+</html>

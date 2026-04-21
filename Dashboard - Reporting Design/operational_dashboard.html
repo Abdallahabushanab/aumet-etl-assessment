@@ -1,0 +1,396 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--bg2:#1a1d27;--bg3:#22263a;--border:#2a2e3d;--aumet:#1a5c4f;--acc:#e8a44a;--text:#e8eaf0;--text2:#9aa0b8;--text3:#5a6180;--red:#e05252;--amber:#e8a44a;--green:#22c9a0;--blue:#5b9cf6;--purple:#a78bfa}
+.wrap{border-radius:12px;overflow:hidden;border:1px solid var(--border);font-size:13px;background:var(--bg)}
+.topbar{background:var(--aumet);padding:10px 18px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:17px;font-weight:500;color:#fff;letter-spacing:.5px}
+.logo span{font-size:11px;font-weight:400;color:rgba(255,255,255,.6);margin-left:8px}
+.badge-pg{background:rgba(255,255,255,.15);color:#fff;font-size:10px;padding:2px 8px;border-radius:99px;font-weight:500}
+.body{display:grid;grid-template-columns:190px 1fr;min-height:600px}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:14px 12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.sb-title{font-size:11px;font-weight:500;color:var(--acc);text-transform:uppercase;letter-spacing:.05em;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.sb-section{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fl{font-size:11px;color:var(--text2);font-weight:500}
+.fs{font-size:12px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 8px;width:100%;appearance:none}
+.fs:focus{outline:none;border-color:var(--acc)}
+.fi{font-size:12px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 8px;width:100%}
+.fi:focus{outline:none;border-color:var(--acc)}
+.main{background:var(--bg);padding:14px;overflow:auto}
+.dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.dt{font-size:15px;font-weight:500;color:var(--text)}
+.ds{font-size:11px;color:var(--text2);margin-top:2px}
+.tabs{display:flex;gap:4px}
+.tab{font-size:11px;padding:5px 12px;border-radius:6px;border:1px solid var(--border);cursor:pointer;color:var(--text2);background:transparent;transition:all .15s}
+.tab.active{background:var(--acc);color:#0f1117;border-color:var(--acc);font-weight:500}
+.page{display:none}.page.active{display:block}
+.sbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.sc{background:var(--bg2);border-radius:8px;padding:10px 12px;border:1px solid var(--border)}
+.sc-l{font-size:10px;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.sc-v{font-size:20px;font-weight:500;color:var(--text)}
+.st{width:100%;border-collapse:collapse;font-size:12px}
+.st th{font-size:11px;font-weight:500;color:var(--text2);padding:6px 10px;text-align:left;background:var(--bg2);border-bottom:1px solid var(--border)}
+.st th.r{text-align:right}
+.st td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+.st tr:last-child td{border-bottom:none}
+.st tr:hover td{background:var(--bg2)}
+.st td.r{text-align:right}
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.section-title{font-size:12px;font-weight:500;color:var(--acc);padding:5px 10px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--acc)}
+.section-badge{font-size:10px;color:var(--text3);padding:3px 8px;background:var(--bg3);border-radius:99px;border:1px solid var(--border)}
+.tbl-section{margin-bottom:16px}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;font-weight:500}
+.b-critical{background:rgba(224,82,82,.15);color:var(--red)}
+.b-warn{background:rgba(232,164,74,.15);color:var(--amber)}
+.b-ok{background:rgba(34,201,160,.12);color:var(--green)}
+.b-info{background:rgba(91,156,246,.12);color:var(--blue)}
+.b-in{background:rgba(34,201,160,.1);color:var(--green)}
+.b-out{background:rgba(224,82,82,.1);color:var(--red)}
+.b-int{background:rgba(91,156,246,.1);color:var(--blue)}
+.b-purple{background:rgba(167,139,250,.12);color:var(--purple)}
+.alert-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);transition:background .15s}
+.alert-row:hover{background:var(--bg2)}
+.alert-row:last-child{border-bottom:none}
+.alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.dot-red{background:var(--red)}.dot-amber{background:var(--amber)}.dot-green{background:var(--green)}
+.alert-title{font-weight:500;font-size:12px;color:var(--text)}
+.alert-sub{font-size:11px;color:var(--text3);margin-top:2px;line-height:1.5}
+.mono{font-family:var(--font-mono);font-size:11px}
+.divider{display:flex;align-items:center;gap:8px;margin:14px 0 10px}
+.divider-line{flex:1;height:1px;background:var(--border)}
+.divider-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.wtabs{display:flex;gap:4px}
+.wtab{font-size:11px;padding:4px 12px;border-radius:99px;border:1px solid var(--border);cursor:pointer;color:var(--text2);background:transparent}
+.wtab.active{border-color:var(--acc);color:var(--acc);background:rgba(232,164,74,.08)}
+.af{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.7}
+.up{color:var(--green)}.down{color:var(--red)}
+</style>
+
+<h2 class="sr-only">Operational dashboard final — no category grid cards on page 3</h2>
+
+<div class="wrap">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="logo">Aumet <span>Analytics</span></div>
+      <span class="badge-pg">Operational Dashboard</span>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.7)">Last updated: Today 13:00</div>
+  </div>
+
+  <div class="body">
+    <div class="sidebar">
+      <div class="sb-title">Filters</div>
+      <div class="sb-section">Time</div>
+      <div class="fg"><div class="fl">Date range</div>
+        <select class="fs" id="o-date" onchange="oFilter()">
+          <option value="today">Today</option>
+          <option value="7">Last 7 days</option>
+          <option value="30">Last 30 days</option>
+        </select>
+      </div>
+      <div class="sb-section" style="margin-top:4px">Tenant</div>
+      <div class="fg"><div class="fl">Pharmacy client</div>
+        <select class="fs" id="o-tenant" onchange="oFilter()">
+          <option value="all">All tenants</option>
+          <option value="aldawaa">Al Dawaa</option>
+          <option value="alnahdi">Al Nahdi</option>
+          <option value="lifeph">Life Pharmacy</option>
+          <option value="nahdi2">Nahdi Express</option>
+        </select>
+      </div>
+      <div class="sb-section" style="margin-top:4px">Product</div>
+      <div class="fg"><div class="fl">Product</div>
+        <select class="fs" id="o-product" onchange="oFilter()">
+          <option value="all">All products</option>
+          <option value="panadol">Panadol 500mg</option>
+          <option value="amox">Amoxicillin</option>
+          <option value="vitc">Vitamin C</option>
+          <option value="cotton">Cotton Wool</option>
+        </select>
+      </div>
+      <div class="sb-section" style="margin-top:4px">Order</div>
+      <div class="fg"><div class="fl">Order ID</div>
+        <input class="fi" id="o-order" placeholder="e.g. WH/IN/00391" oninput="oFilter()"/>
+      </div>
+      <div class="sb-section" style="margin-top:4px">Movement</div>
+      <div class="fg"><div class="fl">Direction</div>
+        <select class="fs" id="o-dir" onchange="oFilter()">
+          <option value="all">All directions</option>
+          <option value="inbound">Inbound</option>
+          <option value="outbound">Outbound</option>
+          <option value="internal">Internal</option>
+        </select>
+      </div>
+      <div class="fg"><div class="fl">Location</div>
+        <select class="fs" id="o-loc" onchange="oFilter()">
+          <option value="all">All locations</option>
+          <option value="shelf">Pharmacy shelf</option>
+          <option value="warehouse">Main warehouse</option>
+          <option value="supplier">Supplier</option>
+        </select>
+      </div>
+      <div class="sb-section" style="margin-top:4px">Lot / Expiry</div>
+      <div class="fg"><div class="fl">Lot number</div>
+        <input class="fi" id="o-lot" placeholder="e.g. LOT-2024-018" oninput="oFilter()"/>
+      </div>
+      <div class="fg"><div class="fl">Expiry status</div>
+        <select class="fs" id="o-expiry" onchange="oFilter()">
+          <option value="all">All</option>
+          <option value="expired">Expired</option>
+          <option value="expiring">Expiring soon</option>
+          <option value="missing">Missing expiry</option>
+          <option value="ok">Valid</option>
+        </select>
+      </div>
+      <div style="margin-top:auto;padding-top:10px;border-top:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--acc);font-weight:500;text-transform:uppercase;letter-spacing:.04em">Active filters</div>
+        <div class="af" id="o-active">All tenants · Today</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="dh">
+        <div>
+          <div class="dt">Operations Centre</div>
+          <div class="ds" id="o-sub">All tenants — today</div>
+        </div>
+        <div class="tabs">
+          <div class="tab active" onclick="oPage(0)">Alerts</div>
+          <div class="tab" onclick="oPage(1)">Movements</div>
+          <div class="tab" onclick="oPage(2)">Lot management</div>
+        </div>
+      </div>
+
+      <div class="page active" id="op0">
+        <div class="sbar">
+          <div class="sc"><div class="sc-l">Critical alerts</div><div class="sc-v" style="color:var(--red)" id="s-crit">3</div></div>
+          <div class="sc"><div class="sc-l">Warnings</div><div class="sc-v" style="color:var(--amber)" id="s-warn">4</div></div>
+          <div class="sc"><div class="sc-l">Movements today</div><div class="sc-v">487</div></div>
+          <div class="sc"><div class="sc-l">Inactive tenants</div><div class="sc-v" style="color:var(--amber)" id="s-inact">1</div></div>
+        </div>
+        <div class="section-hdr">
+          <div class="section-title">Alert queue — ordered by severity</div>
+          <div class="section-badge">High-level summary reporting</div>
+        </div>
+        <div id="alert-list" style="background:var(--bg2);border-radius:8px;border:1px solid var(--border)"></div>
+      </div>
+
+      <div class="page" id="op1">
+        <div class="section-hdr">
+          <div class="section-title">Movement detail — every stock movement row</div>
+          <div class="section-badge">Operational drill-down reporting</div>
+        </div>
+        <table class="st"><thead><tr>
+          <th>Order ID</th><th>Tenant</th><th>Product</th><th>Direction</th>
+          <th class="r">Qty</th><th>From</th><th>To</th><th>Date</th><th>Status</th>
+        </tr></thead><tbody id="mov-body"></tbody></table>
+        <div style="font-size:11px;color:var(--text3);margin-top:6px">Negative quantities indicate reversal entries and are flagged for review.</div>
+      </div>
+
+      <div class="page" id="op2">
+        <div class="section-hdr">
+          <div class="section-title">Expiry risk forecast</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="section-badge">Time-based trend view</div>
+            <div class="wtabs">
+              <div class="wtab active" onclick="setWindow(30,this)">30 days</div>
+              <div class="wtab" onclick="setWindow(60,this)">60 days</div>
+              <div class="wtab" onclick="setWindow(90,this)">90 days</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sbar" id="risk-sbar"></div>
+
+        <div class="tbl-section">
+          <div class="section-hdr">
+            <div class="section-title" id="risk-tbl-title">Products expiring within 30 days</div>
+            <div class="section-badge">Product-level visibility</div>
+          </div>
+          <table class="st"><thead><tr>
+            <th>Product</th><th>Tenant</th><th>Lot</th>
+            <th class="r">Qty at risk</th>
+            <th class="r">Sales LY</th>
+            <th class="r">Expected sales</th>
+            <th class="r">Risk gap</th>
+            <th>Window</th><th>Action</th>
+          </tr></thead><tbody id="risk-body"></tbody></table>
+          <div style="font-size:11px;color:var(--text3);margin-top:6px">Risk gap = qty at risk minus expected sales. Positive = units likely unsold before expiry.</div>
+        </div>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <div class="divider-label">Lot traceability — find any lot instantly</div>
+          <div class="divider-line"></div>
+        </div>
+
+        <div class="section-hdr">
+          <div class="section-title">Lot detail</div>
+          <div class="section-badge">Tenant-level visibility</div>
+        </div>
+        <table class="st"><thead><tr>
+          <th>Lot number</th><th>Tenant</th><th>Product</th>
+          <th class="r">Qty</th><th>Location</th><th>Expiry date</th><th>Days left</th><th>Status</th>
+        </tr></thead><tbody id="lot-body"></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TMAP={all:'All tenants',aldawaa:'Al Dawaa',alnahdi:'Al Nahdi',lifeph:'Life Pharmacy',nahdi2:'Nahdi Express'};
+const ALERTS=[
+  {sev:'critical',dot:'dot-red',title:'3 expired lots — Al Dawaa',sub:'LOT-2024-018, LOT-2024-009, LOT-2024-003 — past expiry date. Remove from shelf immediately.',time:'13:02',tenant:'aldawaa'},
+  {sev:'critical',dot:'dot-red',title:'Nahdi Express — no activity in 26 hours',sub:'Last movement recorded yesterday 10:45. Pipeline may have failed — check ETL status.',time:'12:00',tenant:'nahdi2'},
+  {sev:'critical',dot:'dot-red',title:'Row count mismatch — Life Pharmacy',sub:'Source: 214 rows — Target: 198 rows — 16 rows missing from last batch load.',time:'11:30',tenant:'lifeph'},
+  {sev:'warn',dot:'dot-amber',title:'18 lots expiring within 7 days',sub:'Al Nahdi: 11 lots, Al Dawaa: 7 lots — review before expiry.',time:'10:15',tenant:'all'},
+  {sev:'warn',dot:'dot-amber',title:'8.4% movements missing expiry date',sub:'Above threshold of 7%. Al Dawaa and Life Pharmacy affected.',time:'09:00',tenant:'all'},
+  {sev:'warn',dot:'dot-amber',title:'Negative quantity — Al Nahdi',sub:'Order WH/OUT/00512 — Amoxicillin 250mg — qty: -40. Possible reversal entry.',time:'08:45',tenant:'alnahdi'},
+  {sev:'ok',dot:'dot-green',title:'Al Dawaa batch loaded successfully',sub:'847 rows loaded — all 7 validation checks passed.',time:'08:30',tenant:'aldawaa'},
+];
+const MOVEMENTS=[
+  {order:'WH/IN/00391',tenant:'Al Dawaa',product:'Panadol 500mg',dir:'inbound',qty:300,from:'Supplier WH',to:'Shelf B3',date:'2024-03-05 14:22',status:'ok'},
+  {order:'WH/IN/00391',tenant:'Al Dawaa',product:'Panadol 500mg',dir:'inbound',qty:200,from:'Supplier WH',to:'Shelf B3',date:'2024-03-05 14:22',status:'ok'},
+  {order:'WH/OUT/00512',tenant:'Al Nahdi',product:'Amoxicillin 250mg',dir:'outbound',qty:-40,from:'Shelf A1',to:'Customer',date:'2024-03-05 11:10',status:'warn'},
+  {order:'WH/IN/00445',tenant:'Life Pharmacy',product:'Vitamin C 1000mg',dir:'inbound',qty:150,from:'Supplier WH',to:'Shelf C2',date:'2024-03-05 09:30',status:'ok'},
+  {order:'WH/INT/00088',tenant:'Al Dawaa',product:'Cotton Wool 100g',dir:'internal',qty:80,from:'Main WH',to:'Branch 2',date:'2024-03-05 08:15',status:'ok'},
+  {order:'WH/OUT/00601',tenant:'Al Nahdi',product:'Panadol 500mg',dir:'outbound',qty:120,from:'Shelf B1',to:'Customer',date:'2024-03-05 07:55',status:'ok'},
+  {order:'WH/IN/00392',tenant:'Nahdi Express',product:'Paracetamol 1000mg',dir:'inbound',qty:200,from:'Supplier WH',to:'Shelf D1',date:'2024-03-04 18:30',status:'ok'},
+];
+const LOTS=[
+  {lot:'LOT-2024-018',tenant:'Al Dawaa',product:'Amoxicillin 250mg',qty:240,loc:'Shelf A2',expiry:'2024-04-02',days:-2,status:'danger'},
+  {lot:'LOT-2024-009',tenant:'Nahdi Express',product:'Cotton Wool 100g',qty:48,loc:'Shelf D1',expiry:'2024-04-05',days:1,status:'danger'},
+  {lot:'LOT-2024-031',tenant:'Al Nahdi',product:'Panadol 500mg',qty:180,loc:'Shelf B1',expiry:'2024-04-10',days:6,status:'warn'},
+  {lot:'LOT-2024-022',tenant:'Life Pharmacy',product:'Vitamin C 1000mg',qty:96,loc:'Shelf C2',expiry:'2024-04-15',days:11,status:'warn'},
+  {lot:'LOT-2024-041',tenant:'Al Dawaa',product:'Paracetamol 1000mg',qty:320,loc:'Main WH',expiry:'2024-05-01',days:27,status:'ok'},
+  {lot:'LOT-2024-055',tenant:'Al Nahdi',product:'Amoxicillin 250mg',qty:410,loc:'Shelf A1',expiry:'2024-06-20',days:77,status:'ok'},
+  {lot:'LOT-2024-003',tenant:'Al Dawaa',product:'Panadol 500mg',qty:60,loc:'Shelf B3',expiry:'2024-03-28',days:-6,status:'danger'},
+  {lot:'LOT-2024-061',tenant:'Life Pharmacy',product:'Cotton Wool 100g',qty:null,loc:'Shelf C1',expiry:null,days:null,status:'missing'},
+];
+const RISK={
+  30:[
+    {product:'Amoxicillin 250mg',tenant:'Al Dawaa',lot:'LOT-2024-018',qty:240,sly:380,exp:140,window:'0–10 days'},
+    {product:'Cotton Wool 100g',tenant:'Nahdi Express',lot:'LOT-2024-009',qty:48,sly:90,exp:35,window:'0–10 days'},
+    {product:'Panadol 500mg',tenant:'Al Dawaa',lot:'LOT-2024-003',qty:60,sly:820,exp:210,window:'0–10 days'},
+    {product:'Panadol 500mg',tenant:'Al Nahdi',lot:'LOT-2024-031',qty:180,sly:640,exp:320,window:'11–20 days'},
+    {product:'Vitamin C 1000mg',tenant:'Life Pharmacy',lot:'LOT-2024-022',qty:96,sly:210,exp:110,window:'11–20 days'},
+    {product:'Paracetamol 1000mg',tenant:'Al Dawaa',lot:'LOT-2024-041',qty:320,sly:480,exp:380,window:'21–30 days'},
+  ],
+  60:[
+    {product:'Amoxicillin 250mg',tenant:'Al Dawaa',lot:'LOT-2024-018',qty:240,sly:380,exp:140,window:'0–10 days'},
+    {product:'Cotton Wool 100g',tenant:'Nahdi Express',lot:'LOT-2024-009',qty:48,sly:90,exp:35,window:'0–10 days'},
+    {product:'Panadol 500mg',tenant:'Al Dawaa',lot:'LOT-2024-003',qty:60,sly:820,exp:210,window:'0–10 days'},
+    {product:'Panadol 500mg',tenant:'Al Nahdi',lot:'LOT-2024-031',qty:180,sly:640,exp:420,window:'11–20 days'},
+    {product:'Vitamin C 1000mg',tenant:'Life Pharmacy',lot:'LOT-2024-022',qty:96,sly:210,exp:160,window:'21–30 days'},
+    {product:'Paracetamol 1000mg',tenant:'Al Dawaa',lot:'LOT-2024-041',qty:320,sly:480,exp:430,window:'31–60 days'},
+    {product:'Amoxicillin 250mg',tenant:'Al Nahdi',lot:'LOT-2024-055',qty:180,sly:390,exp:380,window:'31–60 days'},
+  ],
+  90:[
+    {product:'Amoxicillin 250mg',tenant:'Al Dawaa',lot:'LOT-2024-018',qty:240,sly:380,exp:140,window:'0–10 days'},
+    {product:'Cotton Wool 100g',tenant:'Nahdi Express',lot:'LOT-2024-009',qty:48,sly:90,exp:35,window:'0–10 days'},
+    {product:'Panadol 500mg',tenant:'Al Dawaa',lot:'LOT-2024-003',qty:60,sly:820,exp:210,window:'0–10 days'},
+    {product:'Panadol 500mg',tenant:'Al Nahdi',lot:'LOT-2024-031',qty:180,sly:640,exp:480,window:'11–20 days'},
+    {product:'Vitamin C 1000mg',tenant:'Life Pharmacy',lot:'LOT-2024-022',qty:96,sly:210,exp:180,window:'21–30 days'},
+    {product:'Paracetamol 1000mg',tenant:'Al Dawaa',lot:'LOT-2024-041',qty:320,sly:480,exp:450,window:'31–60 days'},
+    {product:'Amoxicillin 250mg',tenant:'Al Nahdi',lot:'LOT-2024-055',qty:410,sly:390,exp:390,window:'61–90 days'},
+    {product:'Cotton Wool 100g',tenant:'Life Pharmacy',lot:'LOT-2024-061',qty:200,sly:180,exp:180,window:'61–90 days'},
+  ]
+};
+let cw=30;
+function fmt(v){if(v>=1000) return (v/1000).toFixed(1)+'K'; return String(v);}
+function setWindow(w,el){cw=w;document.querySelectorAll('.wtab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderRisk();}
+function renderRisk(){
+  const tenant=document.getElementById('o-tenant').value;
+  const lot=(document.getElementById('o-lot')||{}).value||'';
+  const filtered=RISK[cw].filter(r=>{
+    if(tenant!=='all'&&r.tenant!==TMAP[tenant]) return false;
+    if(lot&&!r.lot.toLowerCase().includes(lot.toLowerCase())) return false;
+    return true;
+  });
+  document.getElementById('risk-tbl-title').textContent=`Products expiring within ${cw} days`;
+  const tQ=filtered.reduce((s,r)=>s+r.qty,0);
+  const tS=filtered.reduce((s,r)=>s+r.sly,0);
+  const tG=filtered.reduce((s,r)=>s+Math.max(0,r.qty-r.exp),0);
+  document.getElementById('risk-sbar').innerHTML=`
+    <div class="sc"><div class="sc-l">Lots at risk</div><div class="sc-v" style="color:var(--amber)">${filtered.length}</div></div>
+    <div class="sc"><div class="sc-l">Total qty at risk</div><div class="sc-v">${fmt(tQ)}</div></div>
+    <div class="sc"><div class="sc-l">Sales same period LY</div><div class="sc-v" style="color:var(--blue)">${fmt(tS)}</div></div>
+    <div class="sc"><div class="sc-l">Risk gap</div><div class="sc-v" style="color:var(--red)">${fmt(tG)}</div></div>`;
+  document.getElementById('risk-body').innerHTML=filtered.map(r=>{
+    const gap=r.qty-r.exp;
+    const gc=gap>100?'color:var(--red)':gap>0?'color:var(--amber)':'color:var(--green)';
+    const gl=gap>0?`+${gap} at risk`:`${Math.abs(gap)} surplus`;
+    const ac=gap>100?'b-critical':gap>0?'b-warn':'b-ok';
+    return `<tr><td style="font-weight:500">${r.product}</td><td>${r.tenant}</td><td class="mono">${r.lot}</td><td class="r">${r.qty}</td><td class="r" style="color:var(--blue)">${r.sly}</td><td class="r" style="color:var(--green)">${r.exp}</td><td class="r" style="${gc};font-weight:500">${gl}</td><td><span class="badge b-purple">${r.window}</span></td><td><span class="badge ${ac}">${gap>100?'Urgent action':gap>0?'Monitor':'On track'}</span></td></tr>`;
+  }).join('');
+}
+function oFilter(){
+  const tenant=document.getElementById('o-tenant').value;
+  const date=document.getElementById('o-date').value;
+  const dL={today:'Today',7:'Last 7 days',30:'Last 30 days'}[date];
+  document.getElementById('o-sub').textContent=`${TMAP[tenant]} — ${dL}`;
+  document.getElementById('o-active').textContent=`${TMAP[tenant]} · ${dL}`;
+  renderAlerts(tenant);renderMovements();renderLots();renderRisk();
+}
+function renderAlerts(tenant){
+  const t=tenant||document.getElementById('o-tenant').value;
+  const f=t==='all'?ALERTS:ALERTS.filter(a=>a.tenant===t||a.tenant==='all');
+  document.getElementById('s-crit').textContent=f.filter(a=>a.sev==='critical').length;
+  document.getElementById('s-warn').textContent=f.filter(a=>a.sev==='warn').length;
+  document.getElementById('s-inact').textContent=t==='nahdi2'?1:t==='all'?1:0;
+  document.getElementById('alert-list').innerHTML=f.map(a=>`
+    <div class="alert-row">
+      <div class="alert-dot ${a.dot}"></div>
+      <div style="flex:1"><div class="alert-title">${a.title}</div><div class="alert-sub">${a.sub}</div></div>
+      <div style="margin-left:auto;text-align:right;flex-shrink:0">
+        <span class="badge b-${a.sev==='critical'?'critical':a.sev==='warn'?'warn':'ok'}">${a.sev==='critical'?'Critical':a.sev==='warn'?'Warning':'Resolved'}</span>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">${a.time}</div>
+      </div>
+    </div>`).join('');
+}
+function renderMovements(){
+  const tenant=document.getElementById('o-tenant').value;
+  const dir=document.getElementById('o-dir').value;
+  const product=document.getElementById('o-product').value;
+  const order=(document.getElementById('o-order')||{}).value||'';
+  const pmap={panadol:'Panadol 500mg',amox:'Amoxicillin 250mg',vitc:'Vitamin C 1000mg',cotton:'Cotton Wool 100g'};
+  const rows=MOVEMENTS.filter(m=>{
+    if(tenant!=='all'&&m.tenant!==TMAP[tenant]) return false;
+    if(dir!=='all'&&m.dir!==dir) return false;
+    if(product!=='all'&&m.product!==pmap[product]) return false;
+    if(order&&!m.order.toLowerCase().includes(order.toLowerCase())) return false;
+    return true;
+  });
+  document.getElementById('mov-body').innerHTML=rows.map(m=>{
+    const qc=m.qty<0?'color:var(--red)':'';
+    const dc=m.dir==='inbound'?'b-in':m.dir==='outbound'?'b-out':'b-info';
+    return `<tr><td class="mono">${m.order}</td><td>${m.tenant}</td><td>${m.product}</td><td><span class="badge ${dc}">${m.dir}</span></td><td class="r" style="${qc}">${m.qty}</td><td style="color:var(--text2);font-size:11px">${m.from}</td><td style="color:var(--text2);font-size:11px">${m.to}</td><td style="color:var(--text3);font-size:11px">${m.date}</td><td><span class="badge b-${m.status==='ok'?'ok':'warn'}">${m.status==='ok'?'Valid':'Review'}</span></td></tr>`;
+  }).join('');
+}
+function renderLots(){
+  const tenant=document.getElementById('o-tenant').value;
+  const expiry=document.getElementById('o-expiry').value;
+  const lot=(document.getElementById('o-lot')||{}).value||'';
+  const rows=LOTS.filter(l=>{
+    if(tenant!=='all'&&l.tenant!==TMAP[tenant]) return false;
+    if(expiry==='expired'&&l.status!=='danger') return false;
+    if(expiry==='expiring'&&l.status!=='warn') return false;
+    if(expiry==='missing'&&l.status!=='missing') return false;
+    if(expiry==='ok'&&l.status!=='ok') return false;
+    if(lot&&!l.lot.toLowerCase().includes(lot.toLowerCase())) return false;
+    return true;
+  });
+  document.getElementById('lot-body').innerHTML=rows.map(l=>{
+    const sc=l.status==='danger'?'b-critical':l.status==='warn'?'b-warn':l.status==='missing'?'b-info':'b-ok';
+    const sl=l.status==='danger'?'Expired':l.status==='warn'?'Expiring soon':l.status==='missing'?'Missing expiry':'Valid';
+    const dc=l.days===null?'—':l.days<0?`<span style="color:var(--red)">${l.days}d</span>`:l.days<=7?`<span style="color:var(--amber)">${l.days}d</span>`:`<span style="color:var(--green)">${l.days}d</span>`;
+    return `<tr><td class="mono">${l.lot}</td><td>${l.tenant}</td><td>${l.product}</td><td class="r">${l.qty??'—'}</td><td style="color:var(--text2);font-size:11px">${l.loc}</td><td style="font-size:12px">${l.expiry??'—'}</td><td class="r">${dc}</td><td><span class="badge ${sc}">${sl}</span></td></tr>`;
+  }).join('');
+}
+function oPage(n){
+  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===n));
+}
+oFilter();
+</script>
